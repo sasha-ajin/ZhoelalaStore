@@ -1,0 +1,29 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="row" style="margin-top:8px;">
+    {% for product in products %}
+    <div class="col-lg-4" style="margin-bottom: 8%;">
+
+        <img class="thumbnail" src="{{product.image.url}}">
+        <div class="box-element product">
+            <h6><strong>{{product.name}}</strong></h6>
+            <hr>
+
+            <button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn
+                update-cart">Добавить в корзину
+            </button>
+            <h4 style="display: inline-block; float: right">
+                <strong>{{product.price | floatformat:0}} грн.</strong>
+            </h4>
+
+        </div>
+
+    </div>
+    {%endfor%}
+</div>
+
+
+{% endblock content %}
