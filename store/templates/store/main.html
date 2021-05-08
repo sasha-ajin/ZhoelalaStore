@@ -2,8 +2,8 @@
 {%load static%}
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Ecom</title>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zhoelala</title>
 
     <!--  Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -12,35 +12,12 @@
     <!--  Main  -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 
-    <script type="text/javascript">
-        var user = '{{request.user}}'
-
-        function getToken(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-
-        var csrftoken = getToken('csrftoken')
-
-
-    </script>
 
 </head>
 <body style="background-color: #222222;">
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" >
     <a href="{%url 'store'%}"><img src="{%static 'images/label.png'%}" class="label"></a>
 
     <ul class="navbar-nav mr-auto">
@@ -62,6 +39,76 @@
     {%endblock%}
 
 </div>
+<footer >
+    <div class="container">
+        <a href="https://instagram.com/zhoelala_ua?igshid=1932d0jqexp60">
+            <div class="d-flex justify-content-center">
+
+
+                <img class="inst_logo" src="{% static  'images/insta.png' %}" alt="">
+
+            </div>
+        </a>
+        <div class="d-flex justify-content-center">
+            <p>&#169; Alex Ajintarev</p>
+        </div>
+    </div>
+
+
+</footer>
+
+<script type="text/javascript">
+    var user = '{{request.user}}'
+
+    function getToken(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var csrftoken = getToken('csrftoken')
+
+
+    function getCookie(name) {
+        // Split cookie string and get all individual name=value pairs in an array
+        var cookieArr = document.cookie.split(";");
+
+        // Loop through the array elements
+        for (var i = 0; i < cookieArr.length; i++) {
+            var cookiePair = cookieArr[i].split("=");
+
+            /* Removing whitespace at the beginning of the cookie name
+            and compare it with the given string */
+            if (name == cookiePair[0].trim()) {
+                // Decode the cookie value and return
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+
+        // Return null if not found
+        return null;
+    }
+
+    var cart = JSON.parse(getCookie('cart'))
+
+    if (cart == undefined) {
+        alert('This site uses cookies')
+        cart = {}
+        console.log('Cart Created!', cart)
+        document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+    }
+    console.log('Cart:', cart)
+</script>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

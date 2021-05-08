@@ -1,7 +1,18 @@
 body {
     background-color: hsl(0, 0%, 98%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
-
+.navbar{
+    position: sticky;!important;
+    top: 0;!important;
+    width: 100%;
+}
+footer{
+    background: white;
+    margin-top: auto;
+}
 h1, h2, h3, h4, h5, h6 {
     color: hsl(0, 0%, 30%);
 }
@@ -92,6 +103,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media only screen and (min-width: 600px) {
+    .inst_logo{
+        margin-bottom: 1%;
+        margin-top:10px ;
+        width: 5%;
+    }
     #cart-total {
         width: 20px;
         height: 20px;
@@ -115,13 +131,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media only screen and (max-width: 600px) {
+    .inst_logo{
+        margin-bottom: 10px;
+        margin-top:10px ;
+        width: 10%;
+    }
     #cart-total {
         width: 15px;
         height: 19px;
     }
-
+    .btn{
+        width: 60%;
+        font-size:15px;
+    }
     .label {
-        width: 90px;
+        width: 100px;
     }
 
     #cart-icon {
@@ -134,5 +158,12 @@ h1, h2, h3, h4, h5, h6 {
         width: 20px;
         display: inline-block;
         margin-left: 15px;
+    }
+    .col-lg-4{
+        margin-bottom: 20%;!important;
+        margin-top: 8%;!important;
+    }
+    footer{
+        margin-top: 7%;
     }
 }

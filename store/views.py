@@ -1,39 +1,34 @@
 from django.shortcuts import render
 from .models import *
 import json
-from django.views.generic import ListView
 from django.http import JsonResponse, HttpResponse
+import datetime
+from .utils import CookieCart, CartData
 
 
-class Store(ListView):
-    model = Product
-    context_object_name = 'products'
-    template_name = 'store/store.html'
+def store(request):
+    context = {'products': Product.objects.all()}
+    return render(request, 'store/store.html', context)
 
 
 def cart(request):
-    if request.user.is_authenticated:
-        customer_ = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer_, complete=False)
-        items = order.orderitem_set.all()
-    else:
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items_quantity': 0}
+    data = CartData(request)
+    order = data['order']
+    items = data['items']
+    context = {'items': items, 'order': order, }
 
-    context = {'items': items, 'order': order}
+    # context = {'items': items, 'order': order, 'carItems': cartItems}
     return render(request, 'store/cart.html', context)
 
 
 def checkout(request):
-    if request.user.is_authenticated:
-        customer_ = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer_, complete=False)
-        items = order.orderitem_set.all()
-    else:
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items_quantity': 0}
+    data = CartData(request)
+    # cartItems = cookieData['cartItems']
+    order = data['order']
+    items = data['items']
 
-    context = {'items': items, 'order': order}
+    context = {'items': items, 'order': order, }
+    # context = {'items': items, 'order': order, 'cartItems': cartItems}
     return render(request, 'store/checkout.html', context)
 
 
@@ -58,3 +53,54 @@ def update_item(request):
         orderItem.delete()
 
     return JsonResponse('Item was added', safe=False)
+
+
+def process_order(request):
+    transaction_id = datetime.datetime.now().timestamp()
+    data = json.loads(request.body)
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+    else:
+        print('User is not loged in')
+        print('Cookies', request.COOKIES)
+        name = data['form']['name']
+        number = data['form']['number']
+
+        coockieData = CookieCart(request)
+        items = coockieData['items']
+
+        order = Order.objects.create(
+            number_client=number,
+            name_client=name,
+            transaction_id=transaction_id,
+            complete=False
+        )
+
+        for item in items:
+            product = Product.objects.get(id=item['product']['id'])
+            orderItem = OrderItem.objects.create(
+                product=product,
+                order=order,
+                quantity=item['quantity']
+            )
+
+    total = float(data['form']['total'])
+    order.transaction_id = transaction_id
+    if total == float(order.get_cart_total):
+        order.complete = True
+        order.price = total
+    order.save()
+
+
+    ShippingAdress.objects.create(
+        # customer=customer,
+        order=order,
+        oblast=data['shipping']['oblast'],
+        rayon=data['shipping']['rayon'],
+        gorod=data['shipping']['gorod'],
+        np_otd=data['shipping']['otdeleniye'],
+    )
+
+    return JsonResponse('Payment was completed', safe=False)

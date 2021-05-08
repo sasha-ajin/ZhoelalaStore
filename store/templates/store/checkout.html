@@ -26,13 +26,17 @@
     <div class="col-lg-6">
         <div class="box-element" id="form-wrapper">
             <form id="form">
+                {% csrf_token %}
                 <div id="user-info">
+                    <p>Контактная информация:</p>
+                    <hr>
                     <div class="form-field">
                         <input required class="form-control" type="text" name="name" placeholder="Ф.И.О">
                     </div>
                     <div class="form-field">
-                        <input required class="form-control" type="text" name="email" placeholder="Телефон">
+                        <input required class="form-control" type="text" name="number" placeholder="Телефон">
                     </div>
+
                 </div>
 
                 <div id="shipping-info">
@@ -40,28 +44,37 @@
                     <p>Информация для доставки:</p>
                     <hr>
                     <div class="form-field">
-                        <input class="form-control" type="text" name="address" placeholder="Область..">
+                        <input class="form-control" required type="text" name="oblast" placeholder="Область..">
                     </div>
                     <div class="form-field">
-                        <input class="form-control" type="text" name="city" placeholder="Район..">
+                        <input class="form-control" required type="text" name="rayon" placeholder="Район..">
                     </div>
                     <div class="form-field">
-                        <input class="form-control" type="text" name="state" placeholder="Город..">
+                        <input class="form-control" required type="text" name="gorod" placeholder="Город..">
                     </div>
                     <div class="form-field">
-                        <input class="form-control" type="text" name="country" placeholder="Отделение НП">
+                        <input class="form-control" required type="number" name="otdeleniye" placeholder="Отделение НП">
                     </div>
                 </div>
 
                 <hr>
-                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Продолжить">
             </form>
 
         </div>
         <br>
         <div class="box-element hidden" id="payment-info">
-            <small>Paypal Options</small>
+            <div id="paypal-button-container">
+            </div>
+                        <button id="make-payment">Оформить заказ</button>
         </div>
     </div>
 </div>
+<script src="https://www.paypal.com/sdk/js?client-id=AZ2oIDd0381PUD47ZhOkbAtqqRXlCvuUrrbQY4Lb5l7AmYI4kdUAM6WEgNC5EVSLY3Q_d47k7hNsjcSr&currency=USD">
+</script>
+
+<script type="text/javascript">var total = '{{order.get_cart_total}}'</script>
+<!--<script type="text/javascript" src="{%static 'js/paypal.js'%}"></script>-->
+<script type="text/javascript" src="{%static 'js/checkout.js'%}"></script>
+
 {% endblock content %}

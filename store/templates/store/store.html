@@ -5,14 +5,13 @@
 
 <div class="row" style="margin-top:8px;">
     {% for product in products %}
-    <div class="col-lg-4" style="margin-bottom: 8%;">
-
+    <div class="col-lg-4" style="margin-bottom: 6%;">
         <img class="thumbnail" src="{{product.image.url}}">
         <div class="box-element product">
-            <h6><strong>{{product.name}}</strong></h6>
+            <h4><strong>{{product.name}}</strong></h4>
             <hr>
 
-            <button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn
+            <button data-action="add" data-product="{{product.id}}" class="btn btn-outline-secondary add-btn
                 update-cart">Добавить в корзину
             </button>
             <h4 style="display: inline-block; float: right">
@@ -27,3 +26,4 @@
 
 
 {% endblock content %}
+
