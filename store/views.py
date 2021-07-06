@@ -4,10 +4,11 @@ import json
 from django.http import JsonResponse
 import datetime
 from .utils import CookieCart, CartData
-from .forms import CreateUserForm
+from .forms import CreateUserForm, LoginUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
 
 def store(request):
     context = {'products': Product.objects.all()}
@@ -15,7 +16,6 @@ def store(request):
 
 
 def registration(request):
-
     form = CreateUserForm()
 
     if request.method == 'POST':
@@ -32,19 +32,25 @@ def registration(request):
 
 
 def log_in(request):
+    context = {}
+    form = LoginUserForm()
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+        form = LoginUserForm(request.POST)
+        if form.is_valid():
+            # form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
 
-        if user is not None:
-            login(request, user)
-            return redirect('store')
-        else:
-            messages.info(request, 'Username or password are incorrect')
-            return render(request, 'store/log_in.html')
+            if user is not None:
+                login(request, user)
+                return redirect('store')
+            else:
+                messages.info(request, 'Username or password are incorrect')
+                return render(request, 'store/log_in.html')
+    context['form'] = form
 
-    return render(request, 'store/log_in.html')
+    return render(request, 'store/log_in.html', context)
 
 
 @login_required(login_url='log_in')
