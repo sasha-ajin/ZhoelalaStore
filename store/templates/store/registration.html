@@ -1,0 +1,42 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+<div style="color: white"><br><br><br>
+    <div class="d-flex justify-content-center">
+
+
+        <form action="" method="POST">
+            <h1 style="color: white">Registration</h1><br>
+            {% csrf_token %}
+            {{form.username.label}}<br>
+            {{form.username}}<br><br>
+
+            {{form.email.label}}<br>
+            {{form.email}}<br><br>
+
+            {{form.password1.label}}<br>
+            {{form.password1}}<br><br>
+
+            {{form.password2.label}}<br>
+            {{form.password2}}<br><br>
+            {{form.errors}}
+            <br>
+            <input type="submit" value="Register account" class="btn btn-success"   name="Create User"><br><br><br>
+            <p style="color:white;">I already have account <a href="{% url 'log_in'%}">Sign in</a></p><br><br>
+        </form>
+    </div>
+</div>
+
+<script>
+		var form_fields = document.getElementsByTagName('input')
+		form_fields[1].placeholder='Username..';
+		form_fields[2].placeholder='Email..';
+		form_fields[3].placeholder='Enter password...';
+		form_fields[4].placeholder='Re-enter Password...';
+
+
+		for (var field in form_fields){
+			form_fields[field].className += ' form-control'
+		}
+	</script>
+{% endblock content %}

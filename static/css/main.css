@@ -103,6 +103,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media only screen and (min-width: 600px) {
+    .btn-success{
+        margin: 5px;
+    }
     .inst_logo{
         margin-bottom: 1%;
         margin-top:10px ;

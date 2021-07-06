@@ -14,7 +14,7 @@
                     <th><h5>Товаров: <strong>{{order.get_cart_items_quantity}}</strong></h5></th>
                     <th><h5>Цена:<strong> {{order.get_cart_total | floatformat:0}} грн</strong></h5></th>
                     <th>
-                        <a style="float:right; margin:5px;" class="btn btn-success"
+                        <a style="float:right; " class="btn btn-success"
                            href="{% url 'checkout' %}">Купить</a>
                     </th>
                 </tr>
